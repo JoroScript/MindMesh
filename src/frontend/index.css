@@ -1,0 +1,7 @@
+@import "tailwindcss";
+/* import google fonts whatever */
+
+@theme{
+    --font-roboto: "Roboto", serif;
+    --font-jacquard: "Jacquard 12", serif
+}
