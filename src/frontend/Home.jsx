@@ -8,6 +8,8 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [searchValue,setSearchValue] = useState('');
+
     console.log(notes);
     axios.defaults.withCredentials = true;
     // Function to fetch user data from the server
@@ -41,10 +43,14 @@ const Home = () => {
         }
     };
  
-
-    const notesElements = notes && notes.map(note=>{
-       return <NoteCard key={note.id} thisNote={note} />
-    })
+    
+        const notesElements = notes ?  searchValue ? notes.filter(note=>note.title.toLowerCase().startsWith(searchValue.toLowerCase())).map(note=>{
+            return <NoteCard key={note.id} thisNote={note} />
+        }) : notes.map(note=>{
+           return <NoteCard key={note.id} thisNote={note} />
+        }) : "";
+    
+   
      
     // Effect to fetch user data on mount
     useEffect(() => {
@@ -64,9 +70,9 @@ const Home = () => {
 
     return (
         <div className='w-full min-h-screen h-screen bg-violet-900 '>
-           <TailwindNav setError={setError} />
+           <TailwindNav setSearchValue={setSearchValue} searchValue={searchValue} setError={setError} />
 
-            <main className='flex items-center justify-center w-11/12 mx-auto my-6 flex-col  bg-teal-600'>
+            <main className='flex gap-6 items-center justify-center w-11/12 mx-auto my-6 flex-col  bg-teal-600'>
             {notesElements}
             </main>
            
