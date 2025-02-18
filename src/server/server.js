@@ -4,28 +4,30 @@ import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv'
+dotenv.config();
+
 
 const salt = 10;
 const app = express();
 app.use(cors({
     origin: ['http://localhost:5173'],  // Allow requests only from this frontend
-    methods: ['POST', 'GET'],           // Allow only POST and GET requests
+    methods: ['POST', 'GET','PUT'],           // Allow only POST and GET requests
     credentials: true                   // Allow sending cookies (important for JWT authentication)
 }));
 
 app.use(cookieParser());
 app.use(express.json()); // takes json, gives back js
 
-const SECRET_ACCESS_KEY = "penis1";  // Store in environment variable in production
-const SECRET_REFRESH_KEY = "penis2";  // Store in environment variable in production
 
+const SECRET_ACCESS_KEY = process.env.SECRET_ACCESS_KEY || "blboasdfo2";  // Store in environment variable in production
+const SECRET_REFRESH_KEY = process.env.SECRET_REFRESH_KEY || "blabal2";  // Store in environment variable in production
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "oven2005",
     database: "signup"
 });
-
 // Middleware function to verify user from access token
 const verifyUser = (req, res, next) => {
     const token = req.cookies.token;  // Check for the access token in the cookies
@@ -36,6 +38,8 @@ const verifyUser = (req, res, next) => {
         if (err) {
             return res.status(401).json({ Error: "Token is not valid" });
         }
+        console.log("Decoded Token:", decoded); // Log decoded token to verify contents
+
         req.name = decoded.name;
         req.userId = decoded.userId
         next();
@@ -53,9 +57,9 @@ const refreshToken = (req, res) => {
         if (err) {
             return res.status(403).json({ Error: "Refresh token is not valid" });
         }
-
+        console.log(decoded);
         // Create a new access token
-        const newAccessToken = jwt.sign({ name: decoded.name }, SECRET_ACCESS_KEY, { expiresIn: '15m' });
+        const newAccessToken = jwt.sign({ name: decoded.name,userId: decoded.userId }, SECRET_ACCESS_KEY, { expiresIn: '15m' });
 
         // Send the new access token in the response
         res.cookie('token', newAccessToken, {
@@ -72,6 +76,23 @@ const refreshToken = (req, res) => {
 app.get('/', verifyUser, (req, res) => {
     return res.json({ Status: "Success", name: req.name });
 });
+
+app.get('/get_note/:id',verifyUser,(req,res)=>{
+    console.log("User ID from verifyUser middleware:", req.userId);
+    const noteId = req.params.id
+    console.log(noteId+"this is note id")
+    const selectNoteSql = "SELECT * from notes where user_id = ? AND id = ?"
+    db.query(selectNoteSql,[req.userId,noteId],(err,result)=>{
+        if(err){
+            return res.status(500).json({Error: "error in db"})
+        }
+        if(result.length === 0){
+            return res.status(404).json({Error: "No such note"})
+        }
+        return res.status(200).json({note: result[0]})
+    })
+})
+
 app.get('/notes',verifyUser,(req,res)=>{
     
     const selectNotesSql = "SELECT * from notes where user_id = ?";
@@ -86,6 +107,39 @@ app.get('/notes',verifyUser,(req,res)=>{
     })
 
 })
+app.post('/notes',verifyUser,(req,res)=>{
+    
+    const addNoteSql = "INSERT INTO notes (title,description,done,user_id) VALUES (?,?,?,?)";
+    const values = [req.body.title,req.body.description,false,req.userId]
+    db.query(addNoteSql,values,(err,data)=>{
+        if(err){
+            res.json({Error: "Error in db"});
+        }
+        if(data.affectedRows===0){
+            res.json({error:"Couldn't add note"})
+        }
+        res.json({status: "Success"});
+    })
+})
+app.put('/notes/:id', verifyUser, (req, res) => {
+    const noteId = req.params.id;
+    console.log(req.body.title + "<---this is the title");
+
+    const sql = `UPDATE notes 
+                 SET title = ?, description = ?, done = ?
+                 WHERE id = ? AND user_id = ?`;
+
+    db.query(sql, [req.body.title, req.body.description, req.body.done, noteId, req.userId], (err, result) => {
+        if (err) {
+            console.error("DB Error:", err);
+            return res.status(500).json({ Error: "Error in database" });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ Error: "Didn't find note or no changes made" });
+        }
+        return res.json({ status: "Success" });
+    });
+});
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.clearCookie('refreshToken');

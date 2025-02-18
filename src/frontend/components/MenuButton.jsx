@@ -38,7 +38,7 @@ export default function MenuButton({logout}) {
         }}
       >
         <MenuItem onClick={handleClose}>
-          <Link className='hover:underline' to="new_note"><NoteAddIcon className='' />  Add Note</Link>
+          <Link className='hover:underline' to="/add"><NoteAddIcon/>  Add Note</Link>
         </MenuItem>
         <MenuItem onClick={()=>{
           handleClose();
