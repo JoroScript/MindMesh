@@ -69,8 +69,8 @@ const Home = () => {
     }
 
     return (
-        <body className='min-h-full bg-violet-900'>
-        <div className='w-full  min-h-full bg-violet-900 '>
+        <div className='min-h-screen flex flex-col '>
+        <div className='w-full flex-grow bg-sky-300 '>
            <TailwindNav setSearchValue={setSearchValue} searchValue={searchValue} setError={setError} />
 
             <main className='flex gap-6 items-center justify-center w-11/12 mx-auto my-6 flex-col  bg-teal-600'>
@@ -79,7 +79,7 @@ const Home = () => {
            
             
         </div>
-        </body>
+        </div>
     );
 };
 
