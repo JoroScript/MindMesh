@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import TailwindNav from "./TailwindNav";
 import SaveButton from './SaveButton'
+import MenuButton from "./MenuButton";
+import { useNavigate,Link} from "react-router-dom";
 export default function EditNote(){
-    
+    const navigate = useNavigate();
     const [note,setNote] = useState();
     const [error,setError] = useState(false);
     const [errors,setErrors] = useState();
@@ -52,20 +53,34 @@ export default function EditNote(){
             }
         })
     }
+    const handleLogout =  async () =>{
+        try {
+            await axios.get('http://localhost:5001/logout', { withCredentials: true });
+            navigate('/login');
+        } catch (err) {
+            setError('Error logging out'+err);
+        }
+    }
     return note ? (
-        <div className='w-full min-h-screen h-screen bg-violet-900 '>
+        <div className='w-full min-h-screen  p-6 h-screen bg-violet-900 '>
 
-            <TailwindNav setError={setError}/>
-            <div className='w-full bg-red-500 gap-3 my-3 flex flex-col p-3'>
-            <input type="text" name="title" value={note.title} onChange={handleChange} />
+            <nav className='w-full font-jacquard gap-3   p-3 flex bg-violet-600 items-center justify-between  shadow-2xl '>
+            <h1 className="text-white text-5xl">Editing Note</h1>
+             <MenuButton logout={handleLogout} />
+            </nav>
+            <div className='w-full h-4/6 bg-red-500 gap-3 my-3  flex flex-col p-3'>
+            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  name="title" value={note.title} onChange={handleChange} />
             { errors?.title && <p>{errors.title}</p>}
 
-            <textarea name="description" value={note.description} onChange={handleChange} />
+            <textarea className="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="description" value={note.description} onChange={handleChange} />
             {errors?.description && <p>{errors.description}</p>}
 
-            <h2>{note.done}</h2>
+            <div className="flex justify-between items-center">
+                <Link to="/" className="text-3xl font-jacquard text-white">Go Back</Link>
+                <SaveButton type="edit" setErrors={setErrors} note={note}/>
             </div>
-            <SaveButton type="edit" setErrors={setErrors} note={note}/>
+
+            </div>
         </div>
     ) : <p>Loading .... {error ? error : ""}</p>
 }
