@@ -5,8 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
-
 export default function MenuButton({logout}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -26,7 +26,11 @@ export default function MenuButton({logout}) {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <MenuIcon fontSize='large' className='text-red-500'/>
+        <span 
+          className={`transition-all duration-300 ease-in-out ${open ? "rotate-180 text-red-500" : "rotate-0 text-white"}`}
+        >
+          {open ? <CloseIcon fontSize='large'  /> : <MenuIcon fontSize='large' />}
+        </span>
       </Button>
       <Menu
         id="basic-menu"

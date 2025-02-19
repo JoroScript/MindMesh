@@ -12,7 +12,7 @@ const salt = 10;
 const app = express();
 app.use(cors({
     origin: ['http://localhost:5173'],  // Allow requests only from this frontend
-    methods: ['POST', 'GET','PUT'],           // Allow only POST and GET requests
+    methods: ['POST', 'GET','PUT','PATCH'],           // Allow only POST and GET requests
     credentials: true                   // Allow sending cookies (important for JWT authentication)
 }));
 
@@ -140,6 +140,21 @@ app.put('/notes/:id', verifyUser, (req, res) => {
         return res.json({ status: "Success" });
     });
 });
+app.patch('/notes/:id',verifyUser,(req,res)=>{
+    const noteId = req.params.id
+    console.log(noteId);
+    console.log("Received body: "+req.body);
+    const updateDoneSql = "Update notes SET done = ? WHERE user_id = ? AND id = ?"
+    db.query(updateDoneSql,[req.body.done,req.userId,noteId],(err,data)=>{
+        if(err){
+            return res.status(500).json({error: "error in db"});
+        }
+        if(data.affectedRows===0){
+            return res.status(404).json({error: "can't find note in db"})
+        }
+        return res.status(200).json({status: "Success"});
+    })
+})
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.clearCookie('refreshToken');

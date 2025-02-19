@@ -62,17 +62,17 @@ export default function EditNote(){
         }
     }
     return note ? (
-        <div className='w-full min-h-screen  p-6 h-screen bg-violet-900 '>
+        <div className='w-full min-h-screen flex flex-col items-center h-screen bg-violet-900 '>
 
             <nav className='w-full font-jacquard gap-3   p-3 flex bg-violet-600 items-center justify-between  shadow-2xl '>
             <h1 className="text-white text-5xl">Editing Note</h1>
              <MenuButton logout={handleLogout} />
             </nav>
-            <div className='w-full h-4/6 bg-red-500 gap-3 my-3  flex flex-col p-3'>
-            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  name="title" value={note.title} onChange={handleChange} />
+            <div className='w-full  h-full gap-3 my-3  flex flex-col p-3'>
+            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-2xl font-black rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  name="title" value={note.title} onChange={handleChange} />
             { errors?.title && <p>{errors.title}</p>}
 
-            <textarea className="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="description" value={note.description} onChange={handleChange} />
+            <textarea className="h-full  flex-grow bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="description" value={note.description} onChange={handleChange} />
             {errors?.description && <p>{errors.description}</p>}
 
             <div className="flex justify-between items-center">
