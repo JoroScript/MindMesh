@@ -7,7 +7,10 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
-export default function MenuButton({logout}) {
+import { useContext } from 'react';
+import { NotesContext } from './NotesProvider';
+export default function MenuButton() {
+  const  {handleLogout} = useContext(NotesContext)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -37,6 +40,7 @@ export default function MenuButton({logout}) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
@@ -46,7 +50,7 @@ export default function MenuButton({logout}) {
         </MenuItem>
         <MenuItem onClick={()=>{
           handleClose();
-          logout();
+          handleLogout();
         }}>
           <Link className='hover:underline' to="/login"><LogoutIcon/>  Logout</Link>
         </MenuItem>

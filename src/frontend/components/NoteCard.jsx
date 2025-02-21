@@ -31,20 +31,22 @@ export default function NoteCard({thisNote}){
         
     }
     return note && (
-        <div  className="w-full lg:w-[48%] md:w-[48%]   lg:p-8 lg:h-80   max-w-full flex flex-col px-4 py-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <div  className="hover:opacity-90 transition-all  duration-300 ease-in-out   w-full lg:w-[48%] md:w-[48%]   lg:p-8 lg:h-80   max-w-full flex flex-col px-4 py-6 bg-white border border-gray-200 rounded-xl    shadow-lg shadow-black hover:shadow-xl hover:shadow-cyan-200  dark:bg-gray-800 dark:border-gray-700 ">
         <div className='flex flex-col gap-3 mb-3'>
         <FadeIn  duration={150}>
-        <h1 className="text-3xl  line-clamp-1 font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h1>
+        <h1 className={`text-3xl  line-clamp-1 font-bold tracking-tight  transparent transition delay-50 duration-150  decoration-transparent    ${done ? "line-through decoration-white text-gray-400" : "text-white relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:origin-left after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:transition-transform after:origin left after:duration-500 hover:after:scale-x-100 "}`}>{note.title}</h1>
         </FadeIn>
         <FadeIn duration={250}>
-        <h2 className={  `${done ? 'text-green-300 text-2xl  font-black' : 'text-lg text-red-500 font-black'}`}>- {done ? "done" : "to do"}</h2>
+        <h2 className={  `text-lg font-black ${done ? 'text-green-300 text-2xl  ' : 'text-lg text-red-500'}`}>- {done ? "done" : "to do"}</h2>
         </FadeIn>
         </div>   
 
         
     <FadeIn duration={200}>
-   <p className="font-normal text-gray-300 lg:text-xl line-clamp-3">{note.description}</p>
-   </FadeIn>
+    <div
+          className="text-white line-clamp-1 text-xl"
+          dangerouslySetInnerHTML={{ __html: note.description }}
+        ></div>   </FadeIn>
    <div className='flex items-center mt-auto justify-between'>
     <FadeIn duration={250}>
    <Switch 
@@ -81,15 +83,26 @@ export default function NoteCard({thisNote}){
   }}
 />
 </FadeIn>
-        <div className='hover:bg-gray-700 flex text-gray-200 bg-gray-800  p-2 gap-3'>
+        <div className=' flex text-gray-200 bg-gray-800  p-2 gap-3'>
             <FadeIn duration={300}>
-                    <Link to={`/edit/${note.id}`}>Edit</Link>
+                    <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-white after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-100" to={`/edit/${note.id}`}>Edit</Link>
             </FadeIn>
             <FadeIn duration={350}>
-            <Link to={`/read/${note.id}`}>Read</Link>
+
+
+
+
+            <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:scale-x-0 after:bg-white after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-400" to={`/read/${note.id}`}>Read</Link>
             </FadeIn>
             <FadeIn duration={400}>
-            <Link >Delete</Link>
+
+
+
+
+
+
+
+            <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:origin-left after:w-full after:h-[2px] after:scale-x-0 after:bg-white after:transition-transform after:origin left after:duration-500 hover:after:scale-x-100" >Delete</Link>
             </FadeIn>
             </div>
             </div>

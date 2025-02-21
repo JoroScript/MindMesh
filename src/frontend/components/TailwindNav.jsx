@@ -1,21 +1,12 @@
 import SearchIcon from '@mui/icons-material/Search';
 import MenuButton from './MenuButton';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import FadeIn from './FadeIn';
-export default function TailwindNav({setError,setSearchValue,searchValue}){
+import { useContext } from 'react';
+import { NotesContext } from './NotesProvider';
+export default function TailwindNav({setSearchValue,searchValue}){
 
-
-    const navigate = useNavigate();
-    const handleLogout =  async () =>{
-        try {
-            await axios.get('http://localhost:5001/logout', { withCredentials: true });
-            navigate('/login');
-        } catch (err) {
-            setError('Error logging out'+err);
-        }
-    }
+   const {handleLogout} = useContext(NotesContext);
 
     return(
         <header>

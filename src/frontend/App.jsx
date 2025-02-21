@@ -6,10 +6,12 @@ import RegisterMaterialUi from './RegisterMaterialUi';
 import EditNote from './components/EditNote'
 import './app.css'
 import AddNote from './components/AddNote';
+import NotesProvider from './components/NotesProvider';
 function App() {
   
   return (
     <BrowserRouter>
+              <NotesProvider>
         <Routes>
             <Route path="/" element={<Home/>}></Route>
             <Route path="/register" element={<RegisterMaterialUi/>}></Route>
@@ -17,6 +19,7 @@ function App() {
             <Route path="/add" element={<AddNote/>}></Route>
             <Route path="/edit/:id" element={<EditNote/>}></Route>
         </Routes>
+        </NotesProvider>
     </BrowserRouter>
   )
 }

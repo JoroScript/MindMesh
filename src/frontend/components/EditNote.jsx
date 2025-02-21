@@ -1,15 +1,29 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import SaveButton from './SaveButton'
 import MenuButton from "./MenuButton";
-import { useNavigate,Link} from "react-router-dom";
+import {Link} from "react-router-dom";
+import JoditEditor from 'jodit-react';
+import { debounce } from "lodash";
+import { useContext } from "react";
+import { NotesContext } from "./NotesProvider";
 export default function EditNote(){
-    const navigate = useNavigate();
+    const {error} = useContext(NotesContext);
     const [note,setNote] = useState();
-    const [error,setError] = useState(false);
     const [errors,setErrors] = useState();
     const {id} = useParams()
+    const config = useMemo(
+        ()=>({
+            toolbar: true,
+            placeholder: "Write your note here...",
+            buttons: ['bold','underline','strikeThrough','italic'],
+            styleValues: {
+              'color-text': 'white',
+              'colorBorder': 'white',
+              'color-panel': 'white',
+            }
+    }),[])
     console.log(id);
     console.log(note);
     axios.defaults.withCredentials=true;
@@ -43,7 +57,7 @@ export default function EditNote(){
 
     useEffect(()=>{
         getNote();
-    },[id])
+    },[])
 
     const handleChange = (e) =>{
         setNote(prev=>{
@@ -53,31 +67,36 @@ export default function EditNote(){
             }
         })
     }
-    const handleLogout =  async () =>{
-        try {
-            await axios.get('http://localhost:5001/logout', { withCredentials: true });
-            navigate('/login');
-        } catch (err) {
-            setError('Error logging out'+err);
-        }
-    }
+    const handleJoditChange = debounce((newContent) =>{
+        setNote(prev=>{
+            return {
+                ...prev,
+                description : newContent
+            }
+        })
+    },300)
+   
     return note ? (
         <div className='w-full min-h-screen flex flex-col items-center h-screen bg-violet-900 '>
 
-            <nav className='w-full font-jacquard gap-3   p-3 flex bg-violet-600 items-center justify-between  shadow-2xl '>
+            <nav className='w-full  font-jacquard gap-3   p-3 flex bg-violet-600 items-center justify-between  shadow-2xl '>
             <h1 className="text-white text-5xl">Editing Note</h1>
-             <MenuButton logout={handleLogout} />
+             <MenuButton/>
             </nav>
-            <div className='w-full  h-full gap-3 my-3  flex flex-col p-3'>
-            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-2xl font-black rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  name="title" value={note.title} onChange={handleChange} />
+            <div className='w-full h-full gap-3 my-3  flex flex-col p-3'>
+            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-2xl font-black rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  name="title" value={note.title} onChange={handleChange} />
             { errors?.title && <p>{errors.title}</p>}
 
-            <textarea className="h-full  flex-grow bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="description" value={note.description} onChange={handleChange} />
-            {errors?.description && <p>{errors.description}</p>}
+            <JoditEditor
+        value={note.description}
+        onChange={handleJoditChange}
+        config={config}
+       className="bg-violet-300"
+/>            {errors?.description && <p>{errors.description}</p>}
 
             <div className="flex justify-between items-center">
                 <Link to="/" className="text-3xl font-jacquard text-white">Go Back</Link>
-                <SaveButton type="edit" setErrors={setErrors} note={note}/>
+                <SaveButton setErrors={setErrors} type="edit" note={note}/>
             </div>
 
             </div>

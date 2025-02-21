@@ -2,17 +2,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
-import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import SaveIcon from '@mui/icons-material/Save';
 import axios from 'axios';
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom';
-export default function SaveButton({note,setErrors,type}) {
+export default function SaveButton({setErrors,note,type}) {
     console.log(note);
     const navigate = useNavigate();
-
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 axios.defaults.withCredentials=true;
