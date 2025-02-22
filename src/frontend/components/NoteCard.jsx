@@ -6,8 +6,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import FadeIn from './FadeIn';
 export default function NoteCard({thisNote}){
-    const [done,setDone] = useState(false)
-    const [note,setNote] = useState(null);
+    const [done,setDone] = useState()
+    const [note,setNote] = useState();
   
    
     

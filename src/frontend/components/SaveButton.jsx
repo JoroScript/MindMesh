@@ -13,7 +13,7 @@ import { NotesContext } from './NotesProvider';
 export default function SaveButton({setErrors,note,type}) {
     console.log(note);
     const navigate = useNavigate();
-    const {refreshAccessToken} = useContext(NotesContext)
+    const {refreshAccessToken,fetchData} = useContext(NotesContext)
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 axios.defaults.withCredentials=true;
@@ -43,6 +43,7 @@ axios.defaults.withCredentials=true;
         const res = type==="edit" ? await axios.put(`http://localhost:5001/notes/${note.id}`,{...note},{withCredentials: true}) : 
         await axios.post('http://localhost:5001/notes',{title: note.title,description: note.description})
         if(res.data.status==="Success"){
+          fetchData();
             setLoading(false);
             setSuccess(true);
             setErrors(false);
