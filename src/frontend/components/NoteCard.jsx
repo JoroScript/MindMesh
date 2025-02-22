@@ -1,11 +1,13 @@
-import { useEffect,useState } from 'react';
+import { useContext, useEffect,useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Switch } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import FadeIn from './FadeIn';
+import { NotesContext } from './NotesProvider';
 export default function NoteCard({thisNote}){
+  const {refreshAccessToken} = useContext(NotesContext);
     const [done,setDone] = useState()
     const [note,setNote] = useState();
   
@@ -27,9 +29,18 @@ export default function NoteCard({thisNote}){
             if(res.data.status==="Success"){
                 setDone(e.target.checked)
             }
+            
         }
         catch(err){
-            console.log(err);
+         // If the token has expired or is invalid, try refreshing the access token
+         if (err.response && err.response.status === 401) {
+          console.log('refreshing access token')
+          await refreshAccessToken(handleDone);
+      } else {
+          // setError('Error fetching user data');
+          console.log(err);
+          // setLoading(false);
+      }
         }
         
     }

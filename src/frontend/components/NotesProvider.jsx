@@ -28,6 +28,32 @@ export default function NotesProvider({children}){
             }
         }
     };
+    //function to update note done state
+    const handleDone =  async (e)=>{
+        const doneState = e.target.checked ? 1 : 0;
+        console.log(doneState);
+        try{
+            const res = await axios.patch(`http://localhost:5001/notes/${note.id}`,{done: doneState},{withCredentials: true})
+            console.log(res+"this is res")
+            if(res.data.status==="Success"){
+                return e.target.checked
+            }
+            
+        }
+        catch(err){
+         // If the token has expired or is invalid, try refreshing the access token
+         if (err.response && err.response.status === 401) {
+          console.log('refreshing access token')
+          await refreshAccessToken(handleDone);
+      } else {
+          // setError('Error fetching user data');
+          console.log(err);
+          // setLoading(false);
+      }
+        }
+        
+    }
+    //----
 
     // Function to refresh access token
     const refreshAccessToken = async (resetFunc) => {
