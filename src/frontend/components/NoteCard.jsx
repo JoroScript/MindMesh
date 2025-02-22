@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect,useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Switch } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
@@ -8,6 +8,9 @@ import FadeIn from './FadeIn';
 export default function NoteCard({thisNote}){
     const [done,setDone] = useState(false)
     const [note,setNote] = useState(null);
+  
+   
+    
     console.log(note);
     axios.defaults.withCredentials=true;
     useEffect(()=>{
@@ -31,10 +34,15 @@ export default function NoteCard({thisNote}){
         
     }
     return note && (
-        <div  className="hover:opacity-90 transition-all  duration-300 ease-in-out   w-full lg:w-[48%] md:w-[48%]   lg:p-8 lg:h-80   max-w-full flex flex-col px-4 py-6 bg-white border border-gray-200 rounded-xl    shadow-lg shadow-black hover:shadow-xl hover:shadow-cyan-200  dark:bg-gray-800 dark:border-gray-700 ">
+      <div className="bg-radial hover:scale-[102%] from-[#78FFD7] to-[#007991] 
+      hover:opacity-90 transition-all duration-300 ease-in-out 
+      w-full lg:w-[48%] md:w-[48%] lg:p-8 lg:h-80 max-w-full 
+      flex flex-col px-4 py-6 rounded-xl 
+      shadow-xl shadow-cyan-600 hover:shadow-cyan-200 
+      hover:shadow-[0_0_10px_2px_white]">
         <div className='flex flex-col gap-3 mb-3'>
         <FadeIn  duration={150}>
-        <h1 className={`text-3xl  line-clamp-1 font-bold tracking-tight  transparent transition delay-50 duration-150  decoration-transparent    ${done ? "line-through decoration-white text-gray-400" : "text-white relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:origin-left after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:transition-transform after:origin left after:duration-500 hover:after:scale-x-100 "}`}>{note.title}</h1>
+        <h1 className={`lg:text-4xl text-2xl   line-clamp-1  font-bold tracking-tight  transparent transition delay-50 duration-150  decoration-transparent    ${done ? "line-through decoration-white  text-white" : "text-white"}`}>{note.title}</h1>
         </FadeIn>
         <FadeIn duration={250}>
         <h2 className={  `text-lg font-black ${done ? 'text-green-300 text-2xl  ' : 'text-lg text-red-500'}`}>- {done ? "done" : "to do"}</h2>
@@ -44,7 +52,7 @@ export default function NoteCard({thisNote}){
         
     <FadeIn duration={200}>
     <div
-          className="text-white line-clamp-1 text-xl"
+          className="text-white line-clamp-1 text-xl lg:text-2xl"
           dangerouslySetInnerHTML={{ __html: note.description }}
         ></div>   </FadeIn>
    <div className='flex items-center mt-auto justify-between'>
@@ -59,7 +67,7 @@ export default function NoteCard({thisNote}){
         color: "red",
         backgroundColor: "white", // Ensure visibility
         borderRadius: "50%", // Keep it circular
-        padding: "2px", // Add spacing if needed
+        padding: "3px", // Add spacing if needed
       }}
     />
   }
@@ -69,7 +77,7 @@ export default function NoteCard({thisNote}){
         color: "green",
         backgroundColor: "white", // Ensure visibility
         borderRadius: "50%", // Keep it circular
-        padding: "2px", // Add spacing if needed
+        padding: "3px", // Add spacing if needed
       }}
     />
   }
@@ -80,19 +88,21 @@ export default function NoteCard({thisNote}){
     "& .Mui-checked + .MuiSwitch-track": {
       backgroundColor: "lightgreen !important", // Adjust track color when checked
     },
+    "&:hover": { backgroundColor: "transparent" } // Remove hover effect
+
   }}
 />
 </FadeIn>
-        <div className=' flex text-gray-200 bg-gray-800  p-2 gap-3'>
+        <div className=' flex text-white lg:text-2xl  p-2 gap-3'>
             <FadeIn duration={300}>
-                    <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-white after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-100" to={`/edit/${note.id}`}>Edit</Link>
+                    <Link className=" relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[3px] after:bg-white after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-100" to={`/edit/${note.id}`}>Edit</Link>
             </FadeIn>
             <FadeIn duration={350}>
 
 
 
 
-            <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:scale-x-0 after:bg-white after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-400" to={`/read/${note.id}`}>Read</Link>
+            <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-400" to={`/read/${note.id}`}>Read</Link>
             </FadeIn>
             <FadeIn duration={400}>
 
@@ -102,7 +112,7 @@ export default function NoteCard({thisNote}){
 
 
 
-            <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:origin-left after:w-full after:h-[2px] after:scale-x-0 after:bg-white after:transition-transform after:origin left after:duration-500 hover:after:scale-x-100" >Delete</Link>
+            <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:origin-left after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:transition-transform after:origin left after:duration-500 hover:after:scale-x-100" >Delete</Link>
             </FadeIn>
             </div>
             </div>

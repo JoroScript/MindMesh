@@ -20,7 +20,7 @@ export default function NotesProvider({children}){
             // If the token has expired or is invalid, try refreshing the access token
             if (err.response && err.response.status === 401) {
                 console.log('refreshing access token')
-                await refreshAccessToken();
+                await refreshAccessToken(fetchData);
             } else {
                 setError('Error fetching user data');
 
@@ -30,15 +30,36 @@ export default function NotesProvider({children}){
     };
 
     // Function to refresh access token
-    const refreshAccessToken = async () => {
+    const refreshAccessToken = async (resetFunc) => {
         try {
             await axios.get('http://localhost:5001/refresh-token', { withCredentials: true });
-            fetchData(); // Retry fetching user data after refreshing the token
+            resetFunc(); // Retry fetching user data after refreshing the token
         } catch (err) {
             setError('Session expired, please log in again'+err);
             setLoading(false);
         }
     };
+    //get single note
+    const getNote = async (id) => {
+        try {
+            const res = await axios.get(`http://localhost:5001/get_note/${id}`,{withCredentials: true});
+
+            if (res.data.note) {
+                return res.data.note
+            } else {
+                console.log("No note found", res);
+            }
+        } catch (err) {
+            if (err.response && err.response.status === 401) {
+                console.log('mazna');
+                await refreshAccessToken(getNote);
+            }
+            console.error("Error fetching note:", err);
+            alert("Failed to fetch note.");
+        }
+    };
+    //
+
 
     const handleLogout =  async () =>{
         try {
@@ -49,8 +70,9 @@ export default function NotesProvider({children}){
         }
     }
 
+
     return(
-        <NotesContext.Provider value={{error,loading,notes,fetchData,handleLogout}}>
+        <NotesContext.Provider value={{error,loading,notes,fetchData,handleLogout,refreshAccessToken,getNote}}>
             {children}
         </NotesContext.Provider>
     )

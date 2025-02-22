@@ -8,9 +8,12 @@ import SaveIcon from '@mui/icons-material/Save';
 import axios from 'axios';
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { NotesContext } from './NotesProvider';
 export default function SaveButton({setErrors,note,type}) {
     console.log(note);
     const navigate = useNavigate();
+    const {refreshAccessToken} = useContext(NotesContext)
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 axios.defaults.withCredentials=true;
@@ -50,6 +53,9 @@ axios.defaults.withCredentials=true;
         else console.log(res.data);
       }
       catch(error){
+        if (error.response && error.response.status === 401) {
+         refreshAccessToken(handleButtonClick);  
+      }
         setLoading(false);
         setSuccess(false);
         if (error.inner) {  // to know  error is from Yup validation - error.inner are all yup errors with the path and message pairs (input and its message)
@@ -74,10 +80,18 @@ axios.defaults.withCredentials=true;
         <Fab
           aria-label="save"
           color="primary"
-          sx={buttonSx}
+          sx={{
+            ...buttonSx,  // Keep existing styles,
+            transition: 'transform 0.3s ease-in-out',
+            backgroundImage: "radial-gradient(circle, #007991, #78FFD7)", // Tailwind's radial gradient
+            "&:hover": {
+              backgroundImage: "radial-gradient(circle, #007991, #78FFEE)", // Reversed on hover
+            },
+          }}
           onClick={handleButtonClick}
+          
         >
-          {success ? <CheckIcon /> : <SaveIcon />}
+          {success ? <CheckIcon/> : <SaveIcon />}
         </Fab>
         {loading && (
           <CircularProgress

@@ -22,12 +22,14 @@ export default function MenuButton() {
 
   return (
     <div>
+    
       <Button 
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        disableRipple
       >
         <span 
           className={`transition-all duration-300 ease-in-out ${open ? "rotate-180 text-red-500" : "rotate-0 text-white"}`}
@@ -40,7 +42,6 @@ export default function MenuButton() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
@@ -55,6 +56,7 @@ export default function MenuButton() {
           <Link className='hover:underline' to="/login"><LogoutIcon/>  Logout</Link>
         </MenuItem>
       </Menu>
+      
     </div>
   );
 }

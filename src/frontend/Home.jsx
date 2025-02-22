@@ -38,11 +38,11 @@ const Home = () => {
     }
 
     return (
-        <div className='min-h-screen bg-sky-300 w-full max-w-full flex flex-col overflow-x-hidden'>
+        <div className='bg-radial  from-[#78FFD7] to-[#007991] min-h-screen    w-full max-w-full flex flex-col overflow-x-hidden'>
         <div className='w-full max-w-full min-h-screen flex flex-col'>
            <TailwindNav setSearchValue={setSearchValue} searchValue={searchValue} />
 
-            <main className='flex md:flex-row  md:content-start lg:content-center    md:flex-wrap md:gap-6 lg:flex-row lg:flex-wrap lg:gap-6 gap-y-6 lg:p-6    p-3 bg-sky-300 lg:items-start lg:justify-center w-full items-center justify-center my-6 flex-col'>
+            <main className='flex md:flex-row  md:content-start lg:content-center    md:flex-wrap md:gap-6 lg:flex-row lg:flex-wrap lg:gap-6 gap-y-6 lg:p-6    p-3  lg:items-start lg:justify-center w-full items-center justify-center my-6 flex-col'>
             {notesElements}
             </main>
            
