@@ -6,7 +6,7 @@ import NoteCard from './components/NoteCard';
 import { useContext } from 'react';
 import { NotesContext } from './components/NotesProvider';
 const Home = () => {
-    const {notes,loading,error,fetchData} = useContext(NotesContext);
+    const {notes,loading,error,fetchData,darkMode} = useContext(NotesContext);
     const [searchValue,setSearchValue] = useState('');      
     
     axios.defaults.withCredentials = true;
@@ -36,9 +36,9 @@ const Home = () => {
             <Link to="/login">Login</Link>
             </div>;
     }
-
+    console.log(darkMode);
     return (
-        <div className='bg-radial  from-[#78FFD7] to-[#007991] min-h-screen    w-full max-w-full flex flex-col overflow-x-hidden'>
+        <div className={`${darkMode ? 'bg-gradient-to-r from-[#020024] to-[#8a8850]' : 'bg-radial  from-[#78FFD7] to-[#007991]'}  min-h-screen    w-full max-w-full flex flex-col overflow-x-hidden`}>
         <div className='w-full max-w-full min-h-screen flex flex-col'>
            <TailwindNav setSearchValue={setSearchValue} searchValue={searchValue} />
 

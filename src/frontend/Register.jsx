@@ -57,7 +57,7 @@ export default function Register(){
             await validationSchema.validate(values, { abortEarly: false });
     
             // If validation passes, proceed with the request
-            const res = await axios.post('http://localhost:5000/register', {name: values.name,email: values.email,password: values.password},{ withCredentials: true });
+            const res = await axios.post('http://localhost:5001/register', {name: values.name,email: values.email,password: values.password},{ withCredentials: true });
             
             if (res.data.Status === "Success") {
                 navigate('/login');

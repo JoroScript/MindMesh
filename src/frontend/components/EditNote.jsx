@@ -8,14 +8,16 @@ import JoditEditor from 'jodit-react';
 import { debounce } from "lodash";
 import { useContext } from "react";
 import { NotesContext } from "./NotesProvider";
+import TailwindNav from "./TailwindNav";
+import   '../joditstyles.css'
 export default function EditNote(){
-    const {error,getNote} = useContext(NotesContext);
+    const {error,getNote,darkMode} = useContext(NotesContext);
     const [note,setNote] = useState();
     const [errors,setErrors] = useState();
     const {id} = useParams()
     const config = useMemo(
         ()=>({
-            
+            theme: "custom",
             toolbar: true,
             placeholder: "Write your note here...",
             buttons: ['bold','underline','strikeThrough','italic'],
@@ -26,18 +28,16 @@ export default function EditNote(){
             styleValues: {
               'color-text': 'white',
               'colorBorder': 'white',
-              'color-panel': '#3b82f6',
+              'color-panel': 'black',
             },
             style: {
-                background: 'radial-gradient(at 50% 75%, #80d4ff, #3b82f6, #1e3a8a 90%)',
+           
                 border: '1px solid white',
                 color: '#FFF',
                 fontSize: '20px'
                 },
             showPoweredBy: false
     }),[])
-    console.log(id);
-    console.log(note);
     axios.defaults.withCredentials=true;
    
   
@@ -68,14 +68,11 @@ export default function EditNote(){
     },300)
    
     return note ? (
-        <div className=' w-full min-h-screen flex flex-col items-center h-screen bg-radial  from-[#78FFD7] to-[#007991]'>
+        <div className={`font-oswald w-full min-h-screen flex flex-col ${darkMode ? 'bg-gradient-to-r from-[#020024] to-[#8a8850]' : 'bg-radial  from-[#78FFD7] to-[#007991]'}   h-screen`}>
 
-            <nav className='w-full   gap-3   p-3 flex bg-radial  from-[#78FFD7] to-[#007991] items-center justify-between  shadow-2xl '>
-            <h1 className="text-white text-5xl">Editing Note</h1>
-             <MenuButton/>
-            </nav>
+          <TailwindNav/>
             <div className='w-full h-full gap-3 my-3  flex flex-col p-3'>
-            <input type="text" className="bg-radial-[at_50%_75%] from-sky-200 via-blue-400 to-indigo-900 to-90% outline-2 outline-white focus:outline-4 transition-all duration-200 ease-in  text-2xl font-black rounded-lg focus:ring-blue-500  block w-full  p-2.5 dark:bg-gray-700  dark:placeholder-gray-400 dark:text-white"  name="title" value={note.title} onChange={handleChange} />
+            <input type="text" className={`outline-2 outline-white focus:outline-4 transition-all duration-200 ease-in  text-2xl font-black rounded-lg focus:ring-blue-500  block w-full  p-2.5  dark:placeholder-gray-400 dark:text-white`}  name="title" value={note.title} onChange={handleChange} />
             { errors?.title && <p>{errors.title}</p>}
 
             <JoditEditor

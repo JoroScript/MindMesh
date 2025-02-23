@@ -24,7 +24,7 @@ export default function AddNote(){
         })
     }
     return note ? (
-        <div className='w-full min-h-screen  p-6 h-screen bg-violet-900 '>
+        <div className='font-oswald w-full min-h-screen  p-6 h-screen bg-violet-900 '>
 
         <nav className='w-full font-jacquard gap-3   p-3 flex bg-violet-600 items-center justify-between  shadow-2xl '>
         <h1 className="text-white text-5xl">Adding Note</h1>

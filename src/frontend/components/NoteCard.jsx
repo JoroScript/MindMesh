@@ -7,13 +7,12 @@ import axios from 'axios';
 import FadeIn from './FadeIn';
 import { NotesContext } from './NotesProvider';
 export default function NoteCard({thisNote}){
-  const {refreshAccessToken} = useContext(NotesContext);
+  const {refreshAccessToken,darkMode} = useContext(NotesContext);
     const [done,setDone] = useState()
     const [note,setNote] = useState();
   
    
     
-    console.log(note);
     axios.defaults.withCredentials=true;
     useEffect(()=>{
         setNote(thisNote);
@@ -22,10 +21,8 @@ export default function NoteCard({thisNote}){
   
     const handleDone =  async (e)=>{
         const doneState = e.target.checked ? 1 : 0;
-        console.log(doneState);
         try{
             const res = await axios.patch(`http://localhost:5001/notes/${note.id}`,{done: doneState},{withCredentials: true})
-            console.log(res+"this is res")
             if(res.data.status==="Success"){
                 setDone(e.target.checked)
             }
@@ -45,15 +42,13 @@ export default function NoteCard({thisNote}){
         
     }
     return note && (
-      <div className="bg-radial hover:scale-[102%] from-[#78FFD7] to-[#007991] 
+      <div className={`transition-shadow duration-200 ease-in-out ${darkMode ? 'hover:shadow-[0_0_10px_2px_white] bg-transparent border-white border-1 shadow-slate-500 shadow-lg' : ' hover:shadow-[0_0_10px_2px_white] shadow-xl shadow-cyan-600 hover:shadow-cyan-200 bg-radial  from-[#78FFD7] to-[#007991]'} hover:scale-[102%]
       hover:opacity-90 transition-all duration-300 ease-in-out 
       w-full lg:w-[48%] md:w-[48%] lg:p-8 lg:h-80 max-w-full 
-      flex flex-col px-4 py-6 rounded-xl 
-      shadow-xl shadow-cyan-600 hover:shadow-cyan-200 
-      hover:shadow-[0_0_10px_2px_white]">
-        <div className='flex flex-col gap-3 mb-3'>
+      flex flex-col px-4 py-6 rounded-xl  font-oswald`}>
+        <div className='flex flex-col gap-3 mb-3 '>
         <FadeIn  duration={150}>
-        <h1 className={`lg:text-4xl text-2xl   line-clamp-1  font-bold tracking-tight  transparent transition delay-50 duration-150  decoration-transparent    ${done ? "line-through decoration-white  text-white" : "text-white"}`}>{note.title}</h1>
+        <h1 className={`font-oswald lg:text-4xl text-2xl   line-clamp-1  font-bold tracking-tight  transparent transition delay-50 duration-150  decoration-transparent    ${done ? "line-through decoration-white  text-white" : "text-white"}`}>{note.title}</h1>
         </FadeIn>
         <FadeIn duration={250}>
         <h2 className={  `text-lg font-black ${done ? 'text-green-300 text-2xl  ' : 'text-lg text-red-500'}`}>- {done ? "done" : "to do"}</h2>
@@ -68,6 +63,7 @@ export default function NoteCard({thisNote}){
         ></div>   </FadeIn>
    <div className='flex items-center mt-auto justify-between'>
     <FadeIn duration={250}>
+      <div className='hover:scale-[120%] transition-transform duration-200 ease-in-out'>
    <Switch 
         onChange={handleDone}
   size="medium"
@@ -103,6 +99,7 @@ export default function NoteCard({thisNote}){
 
   }}
 />
+</div>
 </FadeIn>
         <div className=' flex text-white lg:text-2xl  p-2 gap-3'>
             <FadeIn duration={300}>

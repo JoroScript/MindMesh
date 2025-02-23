@@ -7,6 +7,7 @@ export default function NotesProvider({children}){
     const [error,setError] = useState(false);
     const [loading,setLoading] = useState(true);
     const [notes, setNotes] = useState(false);
+    const [darkMode,setDarkMode] = useState(false);
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
 
@@ -81,7 +82,6 @@ export default function NotesProvider({children}){
                 await refreshAccessToken(getNote);
             }
             console.error("Error fetching note:", err);
-            alert("Failed to fetch note.");
         }
     };
     //
@@ -98,7 +98,7 @@ export default function NotesProvider({children}){
 
 
     return(
-        <NotesContext.Provider value={{error,loading,notes,fetchData,handleLogout,refreshAccessToken,getNote}}>
+        <NotesContext.Provider value={{error,loading,notes,fetchData,handleLogout,refreshAccessToken,getNote,darkMode,setDarkMode}}>
             {children}
         </NotesContext.Provider>
     )

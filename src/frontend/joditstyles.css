@@ -1,0 +1,35 @@
+.jodit-toolbar-button svg {
+    fill: white !important; /* Makes icons white */
+    width: 24px !important;  /* Increase icon size */
+  height: 24px !important;
+  }
+  .jodit-toolbar-button__button{
+    flex-grow: 1;
+  }
+  .jodit-toolbar-button__text{
+    font-size: 100px !important;
+    width: 100px;
+  }
+  div.jodit-workplace{
+    background: transparent !important
+  }
+  .jodit-container {
+    background-color: transparent !important;
+  }
+  .jodit-toolbar__box:not(:empty){
+    background-color: transparent !important;
+  }
+  .jodit-status-bar{
+    display: none !important
+  }
+  .jodit-ui-group.jodit-ui-group_line_true.jodit-ui-group_size_middle{
+    display: flex;
+    justify-content: center;
+    
+  }
+  .jodit-toolbar-button {
+    width: 50px !important;  /* Increase button size */
+    height: 50px !important; /* Adjust height */
+    padding: 8px !important; /* Add spacing */
+  }
+  

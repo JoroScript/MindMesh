@@ -13,7 +13,7 @@ import { NotesContext } from './NotesProvider';
 export default function SaveButton({setErrors,note,type}) {
     console.log(note);
     const navigate = useNavigate();
-    const {refreshAccessToken,fetchData} = useContext(NotesContext)
+    const {refreshAccessToken,fetchData,darkMode} = useContext(NotesContext)
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 axios.defaults.withCredentials=true;
@@ -76,6 +76,7 @@ axios.defaults.withCredentials=true;
   };
 
   return (
+    <div className='hover:scale-[113%] transition-transform duration-200 ease-in-out'>
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Box sx={{ m: 1, position: 'relative' }}>
         <Fab
@@ -83,10 +84,10 @@ axios.defaults.withCredentials=true;
           color="primary"
           sx={{
             ...buttonSx,  // Keep existing styles,
-            transition: 'transform 0.3s ease-in-out',
-            backgroundImage: "radial-gradient(circle, #007991, #78FFD7)", // Tailwind's radial gradient
+            transition: 'transform 1s ease-in-out',
+            backgroundImage: `${darkMode ? "radial-gradient(circle, #020024, #8a8950)" : "radial-gradient(circle, #007991, #78FFD7)"}`, // Tailwind's radial gradient
             "&:hover": {
-              backgroundImage: "radial-gradient(circle, #007991, #78FFEE)", // Reversed on hover
+              backgroundImage: `${darkMode ? "radial-gradient(circle, #020024, #8a9555)" : "radial-gradient(circle, #007991, #78FFEE)"}`, // Reversed on hover
             },
           }}
           onClick={handleButtonClick}
@@ -108,5 +109,6 @@ axios.defaults.withCredentials=true;
         )}
       </Box>
     </Box>
+    </div>
   );
 }
