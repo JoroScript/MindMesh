@@ -2,9 +2,10 @@ import axios from "axios";
 import {useState } from "react";
 import SaveButton from './SaveButton'
 import MenuButton from "./MenuButton";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom"; 
 export default function AddNote(){
     const navigate=useNavigate();
+    console.log('hello');
     const [note,setNote] = useState({title: "", description: ""});
     const [error,setError] = useState(false);
     const [errors,setErrors] = useState();
