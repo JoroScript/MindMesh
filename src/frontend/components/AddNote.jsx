@@ -1,21 +1,45 @@
 import axios from "axios";
-import {useState } from "react";
+import {useMemo, useState } from "react";
 import SaveButton from './SaveButton'
-import MenuButton from "./MenuButton";
-import { useNavigate,Link } from "react-router-dom"; 
-export default function AddNote(){
-    const navigate=useNavigate();
-    console.log('hello');
-    const [note,setNote] = useState({title: "", description: ""});
-    const [error,setError] = useState(false);
+import {Link} from "react-router-dom";
+import JoditEditor from 'jodit-react';
+import { debounce } from "lodash";
+import { useContext } from "react";
+import { NotesContext } from "./NotesProvider";
+import TailwindNav from "./TailwindNav";
+import   '../joditstyles.css'
+export default function addNote(){
+    const {error,darkMode} = useContext(NotesContext);
+    const [note,setNote] = useState();
     const [errors,setErrors] = useState();
-    console.log(note);
+    const config = useMemo(
+        ()=>({
+            theme: "custom",
+            toolbar: true,
+            placeholder: "Write your note here...",
+            buttons: ['bold','underline','strikeThrough','italic'],
+            buttonsMD: ['bold','underline','strikeThrough','italic'],
+            buttonsSM: ['bold','underline','strikeThrough','italic'],
+            buttonsXS: ['bold','underline','strikeThrough','italic'],
+          
+            styleValues: {
+              'color-text': 'white',
+              'colorBorder': 'white',
+              'color-panel': 'black',
+            },
+            style: {
+           
+                border: '1px solid white',
+                color: '#FFF',
+                fontSize: '20px'
+                },
+            showPoweredBy: false
+    }),[])
     axios.defaults.withCredentials=true;
-
-  
-    // Function to refresh access token
+   
   
 
+  
     const handleChange = (e) =>{
         setNote(prev=>{
             return {
@@ -24,25 +48,36 @@ export default function AddNote(){
             }
         })
     }
+    const handleJoditChange = debounce((newContent) =>{
+        setNote(prev=>{
+            return {
+                ...prev,
+                description : newContent
+            }
+        })
+    },300)
+   
     return note ? (
-        <div className='font-oswald w-full min-h-screen  p-6 h-screen bg-violet-900 '>
+        <div className={`font-oswald w-full min-h-screen flex flex-col ${darkMode ? 'bg-gradient-to-r from-[#020024] to-[#8a8850]' : 'bg-radial  from-[#78FFD7] to-[#007991]'}   h-screen`}>
 
-        <nav className='w-full font-jacquard gap-3   p-3 flex bg-violet-600 items-center justify-between  shadow-2xl '>
-        <h1 className="text-white text-5xl">Adding Note</h1>
-        <MenuButton/>
-        </nav>
-        <div className='w-full h-4/6 bg-red-500 gap-3 my-3  flex flex-col p-3'>
-        <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  name="title" value={note.title} onChange={handleChange} />
-        { errors?.title && <p>{errors.title}</p>}
+          <TailwindNav/>
+            <div className='w-full h-full gap-3 my-3  flex flex-col p-3'>
+            <input type="text" className={`outline-2 outline-white focus:outline-4 transition-all duration-200 ease-in  text-2xl font-black rounded-lg focus:ring-blue-500  block w-full  p-2.5  dark:placeholder-gray-400 dark:text-white`}  name="title" value={note.title} onChange={handleChange} />
+            { errors?.title && <p>{errors.title}</p>}
 
-        <textarea className="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="description" value={note.description} onChange={handleChange} />
-        {errors?.description && <p>{errors.description}</p>}
-        <div className="flex justify-between items-center">
-        <Link to="/" className="text-3xl font-jacquard text-white">Go Back</Link>
-        <SaveButton type="add" setErrors={setErrors} note={note}/>
+            <JoditEditor
+        value={note.description}
+        onChange={handleJoditChange}
+        config={config}/>
+        
+                    {errors?.description && <p>{errors.description}</p>}
+
+            <div className="flex justify-between items-center">
+                <Link to="/" className="text-3xl font-jacquard text-white">Go Back</Link>
+                <SaveButton setErrors={setErrors} type="add"  note={note}/>
+            </div>
+
+            </div>
         </div>
-
-        </div>
-    </div>
     ) : <p>Loading .... {error ? error : ""}</p>
 }
