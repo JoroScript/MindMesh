@@ -8,9 +8,9 @@ import { useContext } from "react";
 import { NotesContext } from "./NotesProvider";
 import TailwindNav from "./TailwindNav";
 import   '../joditstyles.css'
-export default function addNote(){
+export default function AddNote(){
     const {error,darkMode} = useContext(NotesContext);
-    const [note,setNote] = useState();
+    const [note,setNote] = useState({title: "",description: ""});
     const [errors,setErrors] = useState();
     const config = useMemo(
         ()=>({
@@ -56,8 +56,8 @@ export default function addNote(){
             }
         })
     },300)
-   
-    return note ? (
+   console.log(error)
+    return  (
         <div className={`font-oswald w-full min-h-screen flex flex-col ${darkMode ? 'bg-gradient-to-r from-[#020024] to-[#8a8850]' : 'bg-radial  from-[#78FFD7] to-[#007991]'}   h-screen`}>
 
           <TailwindNav/>
@@ -79,5 +79,5 @@ export default function addNote(){
 
             </div>
         </div>
-    ) : <p>Loading .... {error ? error : ""}</p>
+    )  
 }

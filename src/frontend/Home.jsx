@@ -5,6 +5,7 @@ import TailwindNav from './components/TailwindNav'
 import NoteCard from './components/NoteCard';
 import { useContext } from 'react';
 import { NotesContext } from './components/NotesProvider';
+import FadeIn from './components/FadeIn';
 const Home = () => {
     const {notes,loading,error,fetchData,darkMode} = useContext(NotesContext);
     const [searchValue,setSearchValue] = useState('');      
@@ -15,6 +16,7 @@ const Home = () => {
     
         const notesElements = notes ?  searchValue ? notes.filter(note=>note.title.toLowerCase().startsWith(searchValue.toLowerCase())).map(note=>{
             return <NoteCard key={note.id} thisNote={note} />
+
         }) : notes.map(note=>{
            return <NoteCard key={note.id} thisNote={note} />
         }) : "";
@@ -42,7 +44,7 @@ const Home = () => {
         <div className='w-full max-w-full min-h-screen flex flex-col'>
            <TailwindNav setSearchValue={setSearchValue} searchValue={searchValue} />
 
-            <main className='flex md:flex-row  md:content-start lg:content-center    md:flex-wrap md:gap-6 lg:flex-row lg:flex-wrap lg:gap-6 gap-y-6 lg:p-6    p-3  lg:items-start lg:justify-center w-full items-center justify-center my-6 flex-col'>
+            <main className='flex md:flex-row  md:content-start lg:content-center     md:flex-wrap md:gap-6 lg:flex-row lg:flex-wrap lg:gap-6 gap-y-6 lg:p-6    p-3  lg:items-start lg:justify-center w-full items-center justify-center my-6 flex-col'>
             {notesElements}
             </main>
            

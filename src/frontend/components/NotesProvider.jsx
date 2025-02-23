@@ -60,7 +60,7 @@ export default function NotesProvider({children}){
     const refreshAccessToken = async (resetFunc) => {
         try {
             await axios.get('http://localhost:5001/refresh-token', { withCredentials: true });
-            resetFunc(); // Retry fetching user data after refreshing the token
+            await resetFunc(); // Retry fetching user data after refreshing the token
         } catch (err) {
             setError('Session expired, please log in again'+err);
             setLoading(false);
@@ -72,6 +72,7 @@ export default function NotesProvider({children}){
             const res = await axios.get(`http://localhost:5001/get_note/${id}`,{withCredentials: true});
 
             if (res.data.note) {
+                setLoading(false);
                 return res.data.note
             } else {
                 console.log("No note found", res);
@@ -79,7 +80,7 @@ export default function NotesProvider({children}){
         } catch (err) {
             if (err.response && err.response.status === 401) {
                 console.log('mazna');
-                await refreshAccessToken(getNote);
+                await refreshAccessToken(()=>getNote(id));
             }
             console.error("Error fetching note:", err);
         }
@@ -98,7 +99,7 @@ export default function NotesProvider({children}){
 
 
     return(
-        <NotesContext.Provider value={{error,loading,notes,fetchData,handleLogout,refreshAccessToken,getNote,darkMode,setDarkMode}}>
+        <NotesContext.Provider value={{error,setLoading,loading,notes,fetchData,handleLogout,refreshAccessToken,getNote,darkMode,setDarkMode}}>
             {children}
         </NotesContext.Provider>
     )

@@ -42,7 +42,7 @@ export default function NoteCard({thisNote}){
         
     }
     return note && (
-      <div className={`transition-shadow duration-200 ease-in-out ${darkMode ? 'hover:shadow-[0_0_10px_2px_white] bg-transparent border-white border-1 shadow-slate-500 shadow-lg' : ' hover:shadow-[0_0_10px_2px_white] shadow-xl shadow-cyan-600 hover:shadow-cyan-200 bg-radial  from-[#78FFD7] to-[#007991]'} hover:scale-[102%]
+      <div className={`transition-shadow duration-200 ease-in-out ${darkMode ? 'hover:shadow-[0_0_10px_2px_white] bg-transparent border-white border-1 shadow-slate-500 shadow-lg' : ' hover:shadow-[0_0_10px_2px_white] shadow-xl shadow-cyan-600 hover:shadow-cyan-200 bg-radial  from-[#78FFD7] to-[#007991]'} transition-transform duration-200 ease-in-out hover:-translate-y-2 hover:scale-[101%]
       hover:opacity-90 transition-all duration-300 ease-in-out 
       w-full lg:w-[48%] md:w-[48%] lg:p-8 lg:h-80 max-w-full 
       flex flex-col px-4 py-6 rounded-xl  font-oswald`}>
