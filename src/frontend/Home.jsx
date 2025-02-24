@@ -25,19 +25,18 @@ const Home = () => {
      
     // Effect to fetch user data on mount
     useEffect(() => {
-        fetchData();
+        const getNotes = async () =>{
+            await fetchData();
+        }
+        
+        getNotes();
     }, []);
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    if (error) {
-        return <div>
-            {error}
-            <Link to="/login">Login</Link>
-            </div>;
-    }
+   
     console.log(darkMode);
     return (
         <div className={`${darkMode ? 'bg-gradient-to-r from-[#020024] to-[#8a8850]' : 'bg-radial  from-[#78FFD7] to-[#007991]'}  min-h-screen    w-full max-w-full flex flex-col overflow-x-hidden`}>

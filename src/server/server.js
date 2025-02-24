@@ -12,7 +12,7 @@ const salt = 10;
 const app = express();
 app.use(cors({
     origin: ['http://localhost:5173'],  // Allow requests only from this frontend
-    methods: ['POST', 'GET','PUT','PATCH'],           // Allow only POST and GET requests
+    methods: ['POST', 'GET','PUT','PATCH','DELETE'],           // Allow only POST and GET requests
     credentials: true                   // Allow sending cookies (important for JWT authentication)
 }));
 
@@ -119,6 +119,20 @@ app.post('/notes',verifyUser,(req,res)=>{
             res.json({error:"Couldn't add note"})
         }
         res.json({status: "Success"});
+    })
+})
+app.delete('/notes/:id',verifyUser,(req,res)=>{
+    const noteId = req.params.id;
+    const deleteSql = 'Delete  FROM notes WHERE id = ?';
+
+    db.query(deleteSql,[noteId],(err,result)=>{
+        if(err){
+            return res.status(500).json({error: "Failed to delete note",details: err.message})
+        }
+        if(result.affectedRows === 0){
+            return res.status(404).json({error: "Note not found",details: err.message})
+        }
+        return res.status(200).json({status: "Success"})
     })
 })
 app.put('/notes/:id', verifyUser, (req, res) => {

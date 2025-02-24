@@ -17,7 +17,7 @@ export default function TailwindNav({setSearchValue,searchValue}){
         <header>
         <nav className={`w-full  ${darkMode ? 'bg-gradient from-[#020024] border-b-2 border-white  to-[#8a8850]' : 'bg-radial from-[#78FFD7] b to-[#007991]'}  font-oswald gap-3 p-3 flex  items-center justify-between  shadow-2xl`}>
             
-            <div className='flex items-center'>
+            <div className={` ${location.pathname==="/" ? 'flex' : 'hidden'} items-center`}>
                 <FadeIn duration={300}>
                 <div className='hover:scale-[120%] transition-transform ease-in-out duration-300 hover:cursor-pointer'>
                 <SearchIcon  fontSize='large'  className='text-white'/>
@@ -27,6 +27,7 @@ export default function TailwindNav({setSearchValue,searchValue}){
                 <input placeholder='search'   onChange={e=>setSearchValue(e.target.value)} value={searchValue} className='font-oswald h-10 w-11/12 border-2 focus:outline-white text-white transition-all duration-300 focus:w-full p-2  placeholder:font-black text-xl rounded border-white outline-white ' />
                 </FadeIn>
             </div>
+            {location.pathname!=="/" && <h1 className='text-white text-3xl'>{location.pathname.startsWith('/edit') ? "Editing Note" : "Adding note"}</h1>}
             <FadeIn duration={300}>
                 <DarkModeSwitch/>
                 </FadeIn>

@@ -13,6 +13,7 @@ import AppTheme from './sharedMaterial/AppTheme';
 import ColorModeSelect from './sharedMaterial/colorModeSelect';
 import axios from "axios";
 import { useNavigate,Link } from 'react-router-dom';
+import { NotesContext } from './components/NotesProvider';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -58,6 +59,10 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 
 export default function LoginMaterialUi(props) {
     const navigate = useNavigate();
+    const {setError} = React.useContext(NotesContext);
+    React.useEffect(()=>{
+      setError(true);
+    },[])
   const [emailError, setEmailError] = React.useState(false);
   const [generalError,setGeneralError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
@@ -81,6 +86,7 @@ export default function LoginMaterialUi(props) {
         console.log(res);
             if(res.data.Status==="Success"){
                 console.log("Success");
+                setError(false);
                 navigate('/');
             }
             else {

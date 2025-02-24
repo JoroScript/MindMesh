@@ -6,10 +6,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import FadeIn from './FadeIn';
 import { NotesContext } from './NotesProvider';
+import DeleteModal from './DeleteModal';
+
 export default function NoteCard({thisNote}){
-  const {refreshAccessToken,darkMode} = useContext(NotesContext);
+  const {refreshAccessToken,darkMode,fetchData} = useContext(NotesContext);
     const [done,setDone] = useState()
     const [note,setNote] = useState();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
   
    
     
@@ -41,6 +45,20 @@ export default function NoteCard({thisNote}){
         }
         
     }
+    const handleDelete = async (noteId) =>{
+      try{
+       const res= await axios.delete(`http://localhost:5001/notes/${noteId}`,{withCredentials: true})
+        if(res.data.status==="Success"){
+         await fetchData();
+        }
+      }
+      catch(err){
+        if(err.response && err.response.status===401){
+          refreshAccessToken(()=>handleDelete(noteId));  
+        }
+      }
+    }
+    
     return note && (
       <div className={`transition-shadow duration-200 ease-in-out ${darkMode ? 'hover:shadow-[0_0_10px_2px_white] bg-transparent border-white border-1 shadow-slate-500 shadow-lg' : ' hover:shadow-[0_0_10px_2px_white] shadow-xl shadow-cyan-600 hover:shadow-cyan-200 bg-radial  from-[#78FFD7] to-[#007991]'} transition-transform duration-200 ease-in-out hover:-translate-y-2 hover:scale-[101%]
       hover:opacity-90 transition-all duration-300 ease-in-out 
@@ -105,22 +123,26 @@ export default function NoteCard({thisNote}){
             <FadeIn duration={300}>
                     <Link className=" relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[3px] after:bg-white after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-100" to={`/edit/${note.id}`}>Edit</Link>
             </FadeIn>
+
             <FadeIn duration={350}>
-
-
-
-
             <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-400" to={`/read/${note.id}`}>Read</Link>
             </FadeIn>
+            
             <FadeIn duration={400}>
-
-
-
-
-
-
-
-            <Link className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:origin-left after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:transition-transform after:origin left after:duration-500 hover:after:scale-x-100" >Delete</Link>
+            <div>
+      <button 
+        onClick={() => setIsModalOpen(true)}
+        className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-400"
+      >
+        Open Modal
+      </button>
+      
+      <DeleteModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onDelete={()=>handleDelete(note.id)}
+      />
+    </div>
             </FadeIn>
             </div>
             </div>
