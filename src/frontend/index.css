@@ -2,5 +2,6 @@
 /* import google fonts whatever */
 
 @theme{
-    --font-oswald: "Oswald",serif
+    --font-oswald: "Oswald",serif;
+    --font-industry: "Industry",serif;
 }

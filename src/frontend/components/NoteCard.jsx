@@ -36,7 +36,7 @@ export default function NoteCard({thisNote}){
          // If the token has expired or is invalid, try refreshing the access token
          if (err.response && err.response.status === 401) {
           console.log('refreshing access token')
-          await refreshAccessToken(handleDone);
+          await refreshAccessToken(()=>handleDone(e));
       } else {
           // setError('Error fetching user data');
           console.log(err);
@@ -60,13 +60,13 @@ export default function NoteCard({thisNote}){
     }
     
     return note && (
-      <div className={`transition-shadow duration-200 ease-in-out ${darkMode ? 'hover:shadow-[0_0_10px_2px_white] bg-transparent border-white border-1 shadow-slate-500 shadow-lg' : ' hover:shadow-[0_0_10px_2px_white] shadow-xl shadow-cyan-600 hover:shadow-cyan-200 bg-radial  from-[#78FFD7] to-[#007991]'} transition-transform duration-200 ease-in-out hover:-translate-y-2 hover:scale-[101%]
+      <div className={`font-industry  opacity-70 hover:opacity-100 transition-shadow duration-200  ease-in-out ${darkMode ? 'hover:shadow-[0_0_10px_2px_white] bg-transparent border-white border-1 shadow-slate-500 shadow-lg' : ' hover:shadow-[0_0_10px_2px_white] shadow-xl shadow-cyan-600 hover:shadow-cyan-200 bg-radial  from-[#78FFD7] to-[#007991]'} transition-transform duration-200 ease-in-out hover:-translate-y-2 hover:scale-[101%]
       hover:opacity-90 transition-all duration-300 ease-in-out 
       w-full lg:w-[48%] md:w-[48%] lg:p-8 lg:h-80 max-w-full 
-      flex flex-col px-4 py-6 rounded-xl  font-oswald`}>
+      flex flex-col px-4 py-6 rounded-xl`}>
         <div className='flex flex-col gap-3 mb-3 '>
         <FadeIn  duration={150}>
-        <h1 className={`font-oswald lg:text-4xl text-2xl   line-clamp-1  font-bold tracking-tight  transparent transition delay-50 duration-150  decoration-transparent    ${done ? "line-through decoration-white  text-white" : "text-white"}`}>{note.title}</h1>
+        <h1 className={`lg:text-4xl text-2xl font-black   line-clamp-1   tracking-tight  transparent transition delay-50 duration-150  decoration-transparent    ${done ? "line-through decoration-white  text-white" : "text-white"}`}>{note.title}</h1>
         </FadeIn>
         <FadeIn duration={250}>
         <h2 className={  `text-lg font-black ${done ? 'text-green-300 text-2xl  ' : 'text-lg text-red-500'}`}>- {done ? "done" : "to do"}</h2>
@@ -119,7 +119,7 @@ export default function NoteCard({thisNote}){
 />
 </div>
 </FadeIn>
-        <div className=' flex text-white lg:text-2xl  p-2 gap-3'>
+        <div className='font-bold flex text-white lg:text-2xl  p-2 gap-3'>
             <FadeIn duration={300}>
                     <Link className=" relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[3px] after:bg-white after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-100" to={`/edit/${note.id}`}>Edit</Link>
             </FadeIn>
@@ -134,7 +134,7 @@ export default function NoteCard({thisNote}){
         onClick={() => setIsModalOpen(true)}
         className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[3px] after:scale-x-0 after:bg-white after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-400"
       >
-        Open Modal
+        Delete
       </button>
       
       <DeleteModal 

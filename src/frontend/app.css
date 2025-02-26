@@ -1,1 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@font-face {
+    font-family: "Industry";
+    font-display: swap;
+    src: url("/src/assets/industry/IndustryTest-BlackItalic.otf") format("opentype");
+    font-weight: 900; /* Black */
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: "Industry";
+    font-display: swap;
+    src: url("/src/assets/industry/IndustryTest-BoldItalic.otf") format("opentype");
+    font-weight: 700; /* Bold */
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: "Industry";
+    font-display: swap;
+    src: url("/src/assets/industry/IndustryTest-LightItalic.otf") format("opentype");
+    font-weight: 400; /* Regular */
+    font-style: italic;
+  }
+  

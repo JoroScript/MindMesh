@@ -121,11 +121,11 @@ export default function NotesProvider({children}){
     </NotesContext.Provider>
     }
 
-    return error? 
+    return error==="Session expired, please log in again"? 
      (
            <div className={`${darkMode ? 'bg-gradient-to-r from-[#020024] to-[#8a8850]' : 'bg-radial  from-[#78FFD7] to-[#007991]'}  min-h-screen    w-full max-w-full flex flex-col overflow-x-hidden`}>
         <div className='text-blue-950 items-center justify-center w-full max-w-full min-h-screen flex flex-col'>
-        <h1 className='text-center text-4xl'>Session Expired Please Log In Again</h1>
+        <h1 className='text-center text-4xl'>{error} </h1>
         <button onClick={goLogin} className=' cursor-pointer text-center text-3xl font-black' to="/login">Login</button>
         </div>
         </div>

@@ -1,4 +1,3 @@
-import './index.css'
 import Home from './Home'
 import { BrowserRouter,Routes,Route} from 'react-router-dom'
 import LoginMaterialUi from './LoginMaterialUi'
